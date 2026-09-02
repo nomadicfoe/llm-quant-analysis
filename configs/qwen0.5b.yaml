@@ -1,0 +1,57 @@
+# Experiment config. Copy this file and change model.name / n_layers to run on another model.
+seed: 42
+
+model:
+  name: Qwen/Qwen2.5-0.5B      # base model, not Instruct, so fine-tuning shows a real gain
+  n_layers: 24
+
+paths:
+  results_dir: results
+  figures_dir: figures
+  adapter_dir: checkpoints/lora
+  merged_dir: checkpoints/merged_fp16
+
+data:
+  train_dataset: sahil2801/CodeAlpaca-20k
+  n_train: 4000
+  n_heldout: 500
+  mbpp_dataset: google-research-datasets/mbpp
+  mbpp_config: full
+  mbpp_split: test
+  n_mbpp: 500                  # 500 = full test split. Use 100 for quick smoke tests.
+  max_seq_len: 512
+
+train:
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+  epochs: 2
+  lr: 2.0e-4
+  batch_size: 8
+  grad_accum: 2
+  warmup_ratio: 0.03
+  logging_steps: 20
+
+eval:
+  batch_size: 16
+  max_new_tokens: 384
+  exec_timeout: 10             # seconds per MBPP problem
+  exec_workers: 8
+  loss_batch_size: 8
+
+quant:
+  int4_group_size: 128
+
+sensitivity:
+  with_pass1: false            # true = also run MBPP pass@1 for every layer (slow, ~24x eval time)
+  n_pass1_layers: 6            # if with_pass1 false, run pass@1 only on the top-N layers by loss delta
+
+mixed:
+  k_values: [4, 8]             # how many most-sensitive layers to keep at INT8
+
+benchmark:
+  n_warmup: 2
+  n_runs: 5
+  gen_tokens: 128
+  prompt: "### Instruction:\nWrite a Python function that returns the n-th Fibonacci number.\n\n### Response:\n"
