@@ -1,3 +1,6 @@
+import os
+os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0")
+os.environ.setdefault("PYTORCH_ALLOC_CONF", "expandable_segments:True")
 """Shared argument parsing for all scripts. Import this first."""
 import argparse
 import sys

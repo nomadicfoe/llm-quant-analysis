@@ -28,8 +28,8 @@ train:
   target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
   epochs: 2
   lr: 2.0e-4
-  batch_size: 8
-  grad_accum: 2
+  batch_size: 4
+  grad_accum: 4
   warmup_ratio: 0.03
   logging_steps: 20
 
@@ -38,7 +38,7 @@ eval:
   max_new_tokens: 384
   exec_timeout: 10             # seconds per MBPP problem
   exec_workers: 8
-  loss_batch_size: 8
+  loss_batch_size: 4
 
 quant:
   int4_group_size: 128

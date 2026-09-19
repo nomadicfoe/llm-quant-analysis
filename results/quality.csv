@@ -1,0 +1,2 @@
+variant,stage,precision,heldout_loss,mbpp_pass1,n_mbpp,avg_weight_bits
+base_fp16,pretrained,fp16,0.57817,0.278,500,16.0
