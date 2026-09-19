@@ -1,0 +1,4 @@
+precision,model_size_mb,peak_vram_mb,first_token_ms,gen_latency_ms,tokens_per_sec,gen_tokens,gpu
+fp16,942.3,957.7,39.34,4589.3,27.89,128,Tesla T4
+int8,601.0,617.6,155.2,17007.5,7.53,128,Tesla T4
+int4,430.4,467.2,52.99,6049.8,21.16,128,Tesla T4
